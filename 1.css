@@ -38,6 +38,7 @@
   left: 100px;
   top: 570px;
 	animation: idle 3s steps(10, end) infinite;
+  z-index: 1;
 }
 
 .enemigo{
@@ -48,7 +49,9 @@
   position: relative;
   left: 1000px;
   top: 550px;
-  /*animation: fondo 0.9s steps(2, end) infinite;*/
+  z-index: 0;
+  animation: spin 1s infinite;
+  animation-timing-function: linear;
 }
 
 @keyframes fondo{
@@ -78,6 +81,10 @@
 }
 
 @keyframes die{
+}
+
+@keyframes spin{
+  100% { transform: rotate(-360deg); }
 }
 
 @keyframes eWalk{

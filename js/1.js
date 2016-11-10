@@ -40,12 +40,6 @@ function estadoPaisaje(e){
   capa1.style.animationPlayState = e;
   capa2.style.animationPlayState = e;
   capa3.style.animationPlayState = e;
-  if(e == RUNNING){
-    pace = 20*ratio;
-  }
-  else {
-    pace = 10*ratio;
-  }
 }
 
 function personajeOcioso(){
@@ -101,7 +95,6 @@ document.onkeypress = function(e){
 function avanzarEnemigos() {
   if((puntos%300)==0){
     ratio=ratio+1;
-    console.log(pace+" "+ratio);
   }
   var aux = document.getElementsByClassName("enemigo");
   for (var i = 0; i < aux.length; i++) {

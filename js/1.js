@@ -13,6 +13,7 @@ var capa1;
 var capa2;
 var capa3;
 var personaje;
+var pj;
 
 function inicializarVariables(){
   pace = 10;
@@ -25,7 +26,14 @@ function inicializarVariables(){
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
   personaje = document.getElementById("personaje");
+  pj = new Character(100,570);
   playGame();
+}
+
+function Character(posX,posY){
+  this.posX = posX;
+  this.posY = posY;
+  this.enAccion = false;
 }
 
 function estadoPaisaje(e){
@@ -40,11 +48,17 @@ function estadoPaisaje(e){
   }
 }
 
+function personajeOcioso(){
+  pj.enAccion = false;
+  walk();
+}
+
 function walk(){
   personaje.style.animation = "walk 0.7s steps(9, end) infinite";
 }
 
 function jump(){
+  pj.enAccion = true;
   personaje.style.animation = "jump 0.7s steps(10, end)";
 }
 
@@ -53,21 +67,23 @@ function idle(){
 }
 
 function headbutt(){
+  pj.enAccion = true;
   personaje.style.animation = "headbutt 0.7s steps(9, end)";
 }
 
 document.onkeypress = function(e){
   e = e || window.event;
+  if(pj.enAccion == false){
   switch(e.keyCode) {
     case W_KEY:
       jump();
       estadoPaisaje(RUNNING);
-      window.setTimeout(walk,700);
+      window.setTimeout(personajeOcioso,700);
       break;
     case A_KEY:
       headbutt();
       estadoPaisaje(RUNNING);
-      window.setTimeout(walk,700);
+      window.setTimeout(personajeOcioso,700);
       break;
     case S_KEY:
       idle();
@@ -79,7 +95,7 @@ document.onkeypress = function(e){
       break;
     default:
       idle();
-  }
+  }}
 }
 
 function avanzarEnemigos() {

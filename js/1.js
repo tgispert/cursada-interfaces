@@ -95,6 +95,7 @@ document.onkeypress = function(e){
 function avanzarEnemigos() {
   if((puntos%300)==0){
     ratio=ratio+1;
+    // flashear puntos
   }
   var aux = document.getElementsByClassName("enemigo");
   for (var i = 0; i < aux.length; i++) {

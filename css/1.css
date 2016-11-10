@@ -1,0 +1,127 @@
+@font-face {
+  font-family: HardGrunge;
+  src: url('../fonts/Hard Grunge.ttf');
+}
+
+
+
+.juego{
+  width: 1000px;
+  height: 690px;
+  position: absolute;
+}
+
+#capa1{
+  background-image: url('../images/paisaje1.png');
+  background-size: cover;
+  animation: fondo 7s infinite;
+  animation-timing-function: linear;
+  animation-play-state: paused;
+  z-index: -1;
+}
+
+#capa2{
+  background-image: url('../images/paisaje2.png');
+  background-size: cover;
+  animation: fondo 14s infinite;
+  animation-timing-function: linear;
+  animation-play-state: paused;
+  z-index: -2;
+}
+
+#capa3{
+  background-image: url('../images/paisaje3.png');
+  background-size: cover;
+  animation: fondo 21s infinite;
+  animation-timing-function: linear;
+  animation-play-state: paused;
+  z-index: -3;
+}
+
+#personaje{
+  width: 60px;
+  height: 70px;
+  background-image: url('../images/personaje.png');
+  left: 100px;
+  top: 570px;
+	animation: idle 3s steps(10, end) infinite;
+  z-index: 1;
+}
+
+.enemigo{
+  width: 100px;
+  height: 100px;
+  background-image: url('../images/bola.png');
+  background-repeat: no-repeat;
+  position: relative;
+  left: 1000px;
+  top: 550px;
+  z-index: 0;
+  animation: spin 1s infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes fondo{
+  0% { background-position: 0px; }
+  100% { background-position: -1909px; }
+}
+
+@keyframes idle{
+  0% { background-position: 0px -280px; }
+  100% { background-position: -600px -280px; }
+}
+
+@keyframes walk{
+  0% { background-position: 0px 0px; }
+  100% { background-position: -540px 0px; }
+}
+
+@keyframes headbutt{
+  0% { background-position: 0px -350px; }
+  100% { background-position: -540px -350px; }
+}
+
+@keyframes jump{
+  0% { background-position: 0px -70px; top: 570px;}
+  50% { top: 390px;}
+  100% { background-position: -600px -70px; top: 570px;}
+}
+
+@keyframes die{
+}
+
+@keyframes spin{
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes eWalk{
+  0% { background-position: 0px 0px; }
+  100% { background-position: -300px 0px; }
+}
+
+@keyframes eDie{
+  0% { background-position: 0px -100px; }
+  100% { background-position: -500px -100px; }
+}
+
+@keyframes eIdle{
+  0% { background-position: 0px -100px; }
+  100% { background-position: -200px -100px; }
+}
+
+.ui{
+  position: absolute;
+}
+
+#puntaje{
+  width: 150px;
+  height: 45px;
+  top: 20px;
+  left: 842px;
+  background-color: rgba(0,0,0,0.3);
+  font-family: HardGrunge;
+  font-size: 40px;
+  text-shadow: 0 0 5px white;
+  text-align: center;
+  vertical-align: middle;
+}

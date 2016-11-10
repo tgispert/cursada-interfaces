@@ -3,10 +3,19 @@
   src: url('../fonts/Hard Grunge.ttf');
 }
 
+body{
+  background: url('../images/background.jpg');
+  background-repeat: repeat;
+}
+
 .juego{
   width: 1000px;
   height: 690px;
   position: absolute;
+}
+
+#juego{
+  box-shadow: 0 0 20px black;
 }
 
 #capa1{
@@ -49,6 +58,7 @@
 .enemigo{
   width: 100px;
   height: 100px;
+  display: inline-block;
   background-image: url('../images/bola.png');
   background-repeat: no-repeat;
   position: relative;
@@ -105,6 +115,11 @@
 @keyframes eIdle{
   0% { background-position: 0px -100px; }
   100% { background-position: -200px -100px; }
+}
+
+@keyframes flash{
+  0% { color: white; }
+  100% { color: black; }
 }
 
 .ui{

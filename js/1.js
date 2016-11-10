@@ -9,6 +9,7 @@ var ratio;
 var puntos;
 var puntaje;
 var enemigo;
+var fabrica;
 var capa1;
 var capa2;
 var capa3;
@@ -22,6 +23,7 @@ function inicializarVariables(){
   puntaje = document.getElementById("puntaje");
   puntaje.innerHTML = puntos;
   enemigo = 1000;
+  fabrica = new EnemyFactory();
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
@@ -34,7 +36,35 @@ function Character(posX,posY){
   this.posX = posX;
   this.posY = posY;
   this.enAccion = false;
+  this.vidas = 3;
 }
+
+function Enemigo(posX,posY,saltable,rompible){
+  this.posX = posX;
+  this.posY = posY;
+  this.saltable = saltable;
+  this.rompible = rompible;
+  this.divID = null;
+}
+
+Enemigo.prototype.setID = function () {
+  this.divID = puntos;
+};
+
+function EnemyFactory(){
+  var enemigos = [];
+  this.enemigos = enemigos;
+}
+
+EnemyFactory.prototype.crearEnemigo = function () {
+  var e1 = new Enemigo(1000,550,true,true);
+  var div = document.createElement('div');
+  div.className = "juego enemigo";
+  e1.divID = puntos;
+  div.id = e1.divID;
+  document.getElementById("personajes").appendChild(div);
+  this.enemigos.push(e1);
+};
 
 function estadoPaisaje(e){
   capa1.style.animationPlayState = e;
@@ -68,39 +98,46 @@ function headbutt(){
 document.onkeypress = function(e){
   e = e || window.event;
   if(pj.enAccion == false){
-  switch(e.keyCode) {
-    case W_KEY:
-      jump();
-      estadoPaisaje(RUNNING);
-      window.setTimeout(personajeOcioso,700);
-      break;
-    case A_KEY:
-      headbutt();
-      estadoPaisaje(RUNNING);
-      window.setTimeout(personajeOcioso,700);
-      break;
-    case S_KEY:
-      idle();
-      estadoPaisaje(PAUSED);
-      break;
-    case D_KEY:
-      walk();
-      estadoPaisaje(RUNNING);
-      break;
-    default:
-      idle();
-  }}
+    switch(e.keyCode) {
+      case W_KEY:
+        jump();
+        estadoPaisaje(RUNNING);
+        window.setTimeout(personajeOcioso,700);
+        break;
+      case A_KEY:
+        headbutt();
+        estadoPaisaje(RUNNING);
+        window.setTimeout(personajeOcioso,700);
+        break;
+      case S_KEY:
+        idle();
+        estadoPaisaje(PAUSED);
+        break;
+      case D_KEY:
+        walk();
+        estadoPaisaje(RUNNING);
+        break;
+      default:
+        idle();
+    }
+  }
+}
+
+function flashPoints(segundos){
+  puntaje.style.animation = "flash "+segundos+"s";
+  setTimeout(function(){ puntaje.style.animation = ""; },segundos*1000);
 }
 
 function avanzarEnemigos() {
-  if((puntos%300)==0){
+  if((puntos%100)==0){
     ratio=ratio+1;
-    // flashear puntos
+    flashPoints(0.5);
+    fabrica.crearEnemigo();
+    console.log(fabrica.enemigos[ratio-1]);
   }
-  var aux = document.getElementsByClassName("enemigo");
-  for (var i = 0; i < aux.length; i++) {
-     enemigo = enemigo - (pace*ratio);
-     aux[i].style.left = enemigo +"px";
+  for (var i = 0; i < fabrica.enemigos.length; i++) {
+     fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
+     document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
   }
   puntos = setTimeout(avanzarEnemigos, 40);
   puntaje.innerHTML = puntos;

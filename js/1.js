@@ -98,7 +98,7 @@ function walk(){
 
 function jump(){
   pj.enAccion = true;
-  personaje.style.animation = "jump 0.7s steps(10, end)";
+  personaje.style.animation = "jump 0.5s steps(10, end)";
 }
 
 function idle(){
@@ -110,6 +110,11 @@ function headbutt(){
   personaje.style.animation = "headbutt 0.7s steps(9, end)";
 }
 
+function die(){
+  pj.enAccion = true;
+  personaje.style.animation = "die 0.5s steps(1, end)";
+}
+
 document.onkeypress = function(e){
   e = e || window.event;
   if(pj.enAccion==false){
@@ -117,7 +122,7 @@ document.onkeypress = function(e){
       case W_KEY:
         jump();
         estadoPaisaje(RUNNING);
-        window.setTimeout(personajeOcioso,700);
+        window.setTimeout(personajeOcioso,500);
         break;
       case A_KEY:
         headbutt();
@@ -144,7 +149,6 @@ function flashPoints(segundos){
 }
 
 function avanzarEnemigos() {
-  console.log(document.getElementById("personaje").style.top);
   if((puntos%100)==0){
     ratio=ratio+0.3;
     flashPoints(0.5);
@@ -155,7 +159,10 @@ function avanzarEnemigos() {
       fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
       document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
       if(fabrica.enemigos[i].colisiona()){
-        alert("PERDISTE");
+        die();
+        pj.vidas--;
+        window.setTimeout(function(){ pj.enAccion = false; },200);
+        estadoPaisaje(PAUSED);
       }
     }
     else {

@@ -144,6 +144,17 @@ body{
   left: 840px;
 }
 
+.vidaTotal{
+  top: 10px;
+  left: 10px;
+}
+
+#vida{
+  width: 100%;
+  height: 100%;
+  background-color: #d62124;
+}
+
 #jugar{
   top: 300px;
   left: 425px;

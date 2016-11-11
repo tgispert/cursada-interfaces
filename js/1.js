@@ -12,6 +12,7 @@ var pace;
 var ratio;
 var puntos;
 var puntaje;
+var vida;
 var fabrica;
 var estadoAnimPaisaje;
 var animHandler;
@@ -27,13 +28,15 @@ function inicializarVariables(){
   puntos = 0;
   puntaje = document.getElementById("puntaje");
   puntaje.innerHTML = puntos;
+  personaje = document.getElementById("personaje");
+  pj = new Character(100,570);
+  vida = document.getElementById("vida");
+  vida.style.width = ""+pj.vida+"%";
   fabrica = new EnemyFactory();
   estadoAnimPaisaje = PAUSED;
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
-  personaje = document.getElementById("personaje");
-  pj = new Character(100,570);
   playGame();
 }
 
@@ -42,8 +45,13 @@ function Character(posX,posY){
   this.posY = posY;
   this.enAccion = false;
   this.tipoAccion = 0;
-  this.vidas = 100;
+  this.vida = 100;
 }
+
+Character.prototype.actualizarVida = function () {
+  this.vida = this.vida-4;
+  vida.style.width = pj.vida+"%";
+};
 
 function Enemigo(posX,tipoAccion){
   this.posX = posX;
@@ -192,10 +200,10 @@ function avanzarEnemigos() {
       document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
       if(fabrica.enemigos[i].colisiona()){
         die();
-        pj.vidas--;
         window.clearTimeout(animHandler);
         window.setTimeout(function () { pj.enAccion = false; }, 300);
         estadoPaisaje(PAUSED);
+        pj.actualizarVida();
       }
     }
     else{
@@ -209,7 +217,7 @@ function avanzarEnemigos() {
 }
 
 function playGame(){
-  if(pj.vidas>0){
+  if(pj.vida>0){
     avanzarEnemigos();
   }
   else{

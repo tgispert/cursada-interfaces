@@ -6,6 +6,9 @@
 body{
   background: url('../images/background.jpg');
   background-repeat: repeat;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .juego{
@@ -125,19 +128,25 @@ body{
   100% { color: black; }
 }
 
-.ui{
-  position: absolute;
-}
-
-#puntaje{
+.ui-btn{
   width: 150px;
   height: 45px;
-  top: 20px;
-  left: 842px;
+  position: absolute;
   background-color: rgba(0,0,0,0.3);
   font-family: HardGrunge;
   font-size: 40px;
   text-shadow: 0 0 5px white;
   text-align: center;
   vertical-align: middle;
+}
+
+#puntaje{
+  top: 10px;
+  left: 840px;
+}
+
+#jugar{
+  top: 300px;
+  left: 425px;
+  cursor: pointer;
 }

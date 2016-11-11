@@ -150,12 +150,11 @@ function flashPoints(segundos){
 
 function avanzarEnemigos() {
   if((puntos%100)==0){
-    ratio=ratio+0.3;
+    if(ratio<5){ ratio=ratio+0.2; }
     flashPoints(0.5);
     fabrica.crearEnemigo();
   }
   for (var i = 0; i < fabrica.enemigos.length; i++) {
-    console.log(pj.enAccion);
     if(fabrica.enemigos[i].enCuadro()==true){
       fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
       document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
@@ -172,12 +171,20 @@ function avanzarEnemigos() {
       i--;
     }
   }
-  puntos = setTimeout(avanzarEnemigos, 40);
+  puntos = setTimeout(playGame, 40);
   puntaje.innerHTML = puntos;
 }
 
 function playGame(){
-  avanzarEnemigos();
+  if(pj.vidas>0){
+    avanzarEnemigos();
+  }
+  else{
+    console.log('GAME OVER');
+  }
 }
 
-window.onload = inicializarVariables;
+document.getElementById("jugar").onclick = function(){
+  document.getElementById("jugar").style.visibility = "hidden";
+  inicializarVariables();
+};

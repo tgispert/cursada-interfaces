@@ -42,7 +42,6 @@ function Enemigo(posX,saltable,rompible){
   this.saltable = saltable;
   this.rompible = rompible;
   this.divID = null;
-  this.del = false;
 }
 
 Enemigo.prototype.setID = function () {
@@ -51,12 +50,19 @@ Enemigo.prototype.setID = function () {
 
 Enemigo.prototype.enCuadro = function () {
   if(this.posX<-100){
-    this.del = true;
     return false;
   }
   else {
-    this.del = false;
     return true;
+  }
+};
+
+Enemigo.prototype.colisiona = function () {
+  if((this.posX>60)&&(this.posX<120)&&(pj.enAccion==false)){
+    return true;
+  }
+  else {
+    return false;
   }
 };
 
@@ -106,7 +112,7 @@ function headbutt(){
 
 document.onkeypress = function(e){
   e = e || window.event;
-  if(pj.enAccion == false){
+  if(pj.enAccion==false){
     switch(e.keyCode) {
       case W_KEY:
         jump();
@@ -138,6 +144,7 @@ function flashPoints(segundos){
 }
 
 function avanzarEnemigos() {
+  console.log(document.getElementById("personaje").style.top);
   if((puntos%100)==0){
     ratio=ratio+0.3;
     flashPoints(0.5);
@@ -147,6 +154,9 @@ function avanzarEnemigos() {
     if(fabrica.enemigos[i].enCuadro()==true){
       fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
       document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
+      if(fabrica.enemigos[i].colisiona()){
+        alert("PERDISTE");
+      }
     }
     else {
       document.getElementById(fabrica.enemigos[i].divID).remove();

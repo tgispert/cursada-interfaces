@@ -12,6 +12,7 @@ body{
   width: 1000px;
   height: 690px;
   position: absolute;
+  overflow: hidden;
 }
 
 #juego{

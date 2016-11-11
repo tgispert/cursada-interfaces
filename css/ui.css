@@ -49,13 +49,17 @@ body{
 }
 
 #jugar{
-  top: 400px;
-  left: 425px;
+  top: 450px;
+  left: 375px;
+  width: 250px;
+  height: 100px;
   color: #e1e1e1;
+  font-size: 80px;
   cursor: pointer;
   z-index: 2;
   background-color: transparent;
   box-shadow: none;
+  animation: blink 4s ease-in infinite;
 }
 
 #moon{
@@ -93,4 +97,9 @@ body{
   15% { top: 100px; }
   80% { top: 100px; }
   100% { top: 550px; }
+}
+
+@keyframes blink{
+  40% { opacity: 0.7; }
+  100% { opacity: 1; }
 }

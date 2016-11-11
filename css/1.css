@@ -145,14 +145,22 @@ body{
 }
 
 .vidaTotal{
-  top: 10px;
-  left: 10px;
+  height: 25px;
+  top: 20px;
+  left: 40px;
 }
 
 #vida{
   width: 100%;
   height: 100%;
   background-color: #d62124;
+}
+
+.logo{
+  top: 8px;
+  left: 10px;
+  position: absolute;
+  z-index: 1;
 }
 
 #jugar{

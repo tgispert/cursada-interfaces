@@ -4,11 +4,16 @@ const S_KEY = 115;
 const D_KEY = 100;
 const RUNNING = "running";
 const PAUSED = "paused";
+const MAX_PACE = 8;
+const MIN_PACE = 5;
+const MAX_RATIO = 5;
+const MIN_RATIO = 1;
 var pace;
 var ratio;
 var puntos;
 var puntaje;
 var fabrica;
+var estadoAnimPaisaje;
 var capa1;
 var capa2;
 var capa3;
@@ -16,12 +21,13 @@ var personaje;
 var pj;
 
 function inicializarVariables(){
-  pace = 10;
+  pace = 4;
   ratio = 1;
   puntos = 0;
   puntaje = document.getElementById("puntaje");
   puntaje.innerHTML = puntos;
   fabrica = new EnemyFactory();
+  estadoAnimPaisaje = PAUSED;
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
@@ -34,13 +40,13 @@ function Character(posX,posY){
   this.posX = posX;
   this.posY = posY;
   this.enAccion = false;
-  this.vidas = 3;
+  this.tipoAccion = 0;
+  this.vidas = 100;
 }
 
-function Enemigo(posX,saltable,rompible){
+function Enemigo(posX,tipoAccion){
   this.posX = posX;
-  this.saltable = saltable;
-  this.rompible = rompible;
+  this.tipoAccion = tipoAccion;
   this.divID = null;
 }
 
@@ -52,16 +58,16 @@ Enemigo.prototype.enCuadro = function () {
   if(this.posX<-100){
     return false;
   }
-  else {
+  else{
     return true;
   }
 };
 
 Enemigo.prototype.colisiona = function () {
-  if((this.posX>60)&&(this.posX<120)&&(pj.enAccion==false)){
+  if((this.posX>60)&&(this.posX<120)&&(pj.tipoAccion!=this.tipoAccion)){
     return true;
   }
-  else {
+  else{
     return false;
   }
 };
@@ -72,7 +78,7 @@ function EnemyFactory(){
 }
 
 EnemyFactory.prototype.crearEnemigo = function () {
-  var e1 = new Enemigo(1000,true,true);
+  var e1 = new Enemigo(1000,2);
   var div = document.createElement('div');
   div.className = "juego enemigo";
   e1.divID = puntos;
@@ -81,7 +87,29 @@ EnemyFactory.prototype.crearEnemigo = function () {
   this.enemigos.push(e1);
 };
 
+function corregirPace(num,ms){
+  if(pace+num>MAX_PACE){
+    pace = MAX_PACE;
+  }
+  else if(pace+num<MIN_PACE){
+    pace = MIN_PACE;
+  }
+  else {
+    pace = pace + num;
+    setTimeout(corregirPace(num,ms),ms);
+  }
+}
+
 function estadoPaisaje(e){
+  if(estadoAnimPaisaje!=e){
+    estadoAnimPaisaje = e;
+    if(estadoAnimPaisaje==PAUSED){
+      if(pace>4){ window.corregirPace(-1,700); }
+    }
+    else{
+      if(pace<10){ window.corregirPace(1,700); }
+    }
+  }
   capa1.style.animationPlayState = e;
   capa2.style.animationPlayState = e;
   capa3.style.animationPlayState = e;
@@ -89,6 +117,7 @@ function estadoPaisaje(e){
 
 function personajeOcioso(){
   pj.enAccion = false;
+  pj.tipoAccion = 0;
   walk();
 }
 
@@ -98,6 +127,7 @@ function walk(){
 
 function jump(){
   pj.enAccion = true;
+  pj.tipoAccion = 1;
   personaje.style.animation = "jump 0.5s steps(10, end)";
 }
 
@@ -107,11 +137,13 @@ function idle(){
 
 function headbutt(){
   pj.enAccion = true;
+  pj.tipoAccion = 2;
   personaje.style.animation = "headbutt 0.7s steps(9, end)";
 }
 
 function die(){
   pj.enAccion = true;
+  pj.tipoAccion = 3;
   personaje.style.animation = "die 0.5s steps(1, end)";
 }
 
@@ -149,8 +181,9 @@ function flashPoints(segundos){
 }
 
 function avanzarEnemigos() {
+
   if((puntos%100)==0){
-    if(ratio<5){ ratio=ratio+0.2; }
+    if(ratio<MAX_RATIO){ ratio=ratio+0.2; }
     flashPoints(0.5);
     fabrica.crearEnemigo();
   }
@@ -165,7 +198,7 @@ function avanzarEnemigos() {
         estadoPaisaje(PAUSED);
       }
     }
-    else {
+    else{
       document.getElementById(fabrica.enemigos[i].divID).remove();
       fabrica.enemigos.splice(i,1);
       i--;

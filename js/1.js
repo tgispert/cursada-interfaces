@@ -173,7 +173,7 @@ function headbutt(){
 
 function die(){
   pj.tipoAccion = 0;
-  personaje.style.animation = "die 0.5s steps(1, end)";
+  personaje.style.animation = "die 0.3s steps(1, end)";
 }
 
 document.onkeypress = function(e){
@@ -221,7 +221,7 @@ function avanzarEnemigos() {
       if(fabrica.enemigos[i].colisiona()){
         die();
         window.clearTimeout(animHandler);
-        window.setTimeout(function(){ pj.enAccion = false; idle(); }, 300);
+        window.setTimeout(function(){ pj.enAccion = false; idle(); }, 400);
         estadoPaisaje(PAUSED);
         pj.actualizarVida();
       }
@@ -249,7 +249,8 @@ function playGame(){
     avanzarEnemigos();
   }
   else{
-    console.log('GAME OVER');
+    document.getElementById("moon").style.animation = "gameOver 4s";
+    document.getElementById("game-over").style.visibility = "visible";
   }
 }
 

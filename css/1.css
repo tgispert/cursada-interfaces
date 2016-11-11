@@ -135,6 +135,13 @@ body{
   100% { color: black; }
 }
 
+@keyframes gameOver{
+  0% { top: 550px; }
+  15% { top: 100px; }
+  30% { top: 100px; }
+  100% { top: 550px; }
+}
+
 .ui-btn{
   width: 150px;
   height: 45px;
@@ -175,4 +182,22 @@ body{
   top: 300px;
   left: 425px;
   cursor: pointer;
+}
+
+#moon{
+  width: 830px;
+  height: 448px;
+  top: 550px;
+  z-index: -1;
+  background-image: url('../images/moon.png');
+  animation-timing-function: ease;
+}
+
+#game-over{
+  width: 400px;
+  height: 230px;
+  top: 200px;
+  left: 300px;
+  font-size: 100px;
+  visibility: hidden;
 }

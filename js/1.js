@@ -8,6 +8,7 @@ const MAX_PACE = 8;
 const MIN_PACE = 5;
 const MAX_RATIO = 5;
 const MIN_RATIO = 1;
+const ENEMY_INTERVAL = 40;
 var pace;
 var ratio;
 var puntos;
@@ -37,7 +38,6 @@ function inicializarVariables(){
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
-  playGame();
 }
 
 function Character(posX,posY){
@@ -58,10 +58,6 @@ function Enemigo(posX,tipoAccion){
   this.tipoAccion = tipoAccion;
   this.divID = null;
 }
-
-Enemigo.prototype.setID = function () {
-  this.divID = puntos;
-};
 
 Enemigo.prototype.enCuadro = function () {
   if(this.posX<-100){
@@ -86,14 +82,24 @@ function EnemyFactory(){
   this.enemigos = enemigos;
 }
 
-EnemyFactory.prototype.crearEnemigo = function () {
-  var e1 = new Enemigo(1000,2);
+EnemyFactory.prototype.crearEnemigo = function (tipo) {
+  var e1 = new Enemigo(1000,tipo);
   var div = document.createElement('div');
   div.className = "juego enemigo";
   e1.divID = puntos;
   div.id = e1.divID;
   document.getElementById("personajes").appendChild(div);
   this.enemigos.push(e1);
+};
+
+EnemyFactory.prototype.crearEnemigoRandom = function () {
+  if((pj.vida>0)){
+    if(Math.floor((Math.random()*2)+1)==1){
+      var aux = Math.floor((Math.random()*2)+1);
+      console.log(aux);
+      this.crearEnemigo(aux);
+    }
+  }
 };
 
 function corregirPace(num,ms){
@@ -177,7 +183,7 @@ document.onkeypress = function(e){
         estadoPaisaje(RUNNING);
         break;
       default:
-        idle();
+        walk();
     }
   }
 }
@@ -188,11 +194,9 @@ function flashPoints(segundos){
 }
 
 function avanzarEnemigos() {
-
   if((puntos%100)==0){
     if(ratio<MAX_RATIO){ ratio=ratio+0.2; }
     flashPoints(0.5);
-    fabrica.crearEnemigo();
   }
   for (var i = 0; i < fabrica.enemigos.length; i++) {
     if(fabrica.enemigos[i].enCuadro()==true){
@@ -218,6 +222,9 @@ function avanzarEnemigos() {
 
 function playGame(){
   if(pj.vida>0){
+    if(puntos%ENEMY_INTERVAL==0){
+      fabrica.crearEnemigoRandom();
+    }
     avanzarEnemigos();
   }
   else{
@@ -228,4 +235,5 @@ function playGame(){
 document.getElementById("jugar").onclick = function(){
   document.getElementById("jugar").style.visibility = "hidden";
   inicializarVariables();
+  playGame();
 };

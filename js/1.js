@@ -155,13 +155,14 @@ function avanzarEnemigos() {
     fabrica.crearEnemigo();
   }
   for (var i = 0; i < fabrica.enemigos.length; i++) {
+    console.log(pj.enAccion);
     if(fabrica.enemigos[i].enCuadro()==true){
       fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
       document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
       if(fabrica.enemigos[i].colisiona()){
         die();
         pj.vidas--;
-        window.setTimeout(function(){ pj.enAccion = false; },200);
+        window.setTimeout(function(){ pj.enAccion = false; personaje.style.animation = ""; },500);
         estadoPaisaje(PAUSED);
       }
     }

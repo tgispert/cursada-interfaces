@@ -8,7 +8,6 @@ var pace;
 var ratio;
 var puntos;
 var puntaje;
-var enemigo;
 var fabrica;
 var capa1;
 var capa2;
@@ -18,11 +17,10 @@ var pj;
 
 function inicializarVariables(){
   pace = 10;
-  ratio = 0;
+  ratio = 1;
   puntos = 0;
   puntaje = document.getElementById("puntaje");
   puntaje.innerHTML = puntos;
-  enemigo = 1000;
   fabrica = new EnemyFactory();
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
@@ -39,16 +37,27 @@ function Character(posX,posY){
   this.vidas = 3;
 }
 
-function Enemigo(posX,posY,saltable,rompible){
+function Enemigo(posX,saltable,rompible){
   this.posX = posX;
-  this.posY = posY;
   this.saltable = saltable;
   this.rompible = rompible;
   this.divID = null;
+  this.del = false;
 }
 
 Enemigo.prototype.setID = function () {
   this.divID = puntos;
+};
+
+Enemigo.prototype.enCuadro = function () {
+  if(this.posX<-100){
+    this.del = true;
+    return false;
+  }
+  else {
+    this.del = false;
+    return true;
+  }
 };
 
 function EnemyFactory(){
@@ -57,7 +66,7 @@ function EnemyFactory(){
 }
 
 EnemyFactory.prototype.crearEnemigo = function () {
-  var e1 = new Enemigo(1000,550,true,true);
+  var e1 = new Enemigo(1000,true,true);
   var div = document.createElement('div');
   div.className = "juego enemigo";
   e1.divID = puntos;
@@ -130,14 +139,20 @@ function flashPoints(segundos){
 
 function avanzarEnemigos() {
   if((puntos%100)==0){
-    ratio=ratio+1;
+    ratio=ratio+0.3;
     flashPoints(0.5);
     fabrica.crearEnemigo();
-    console.log(fabrica.enemigos[ratio-1]);
   }
   for (var i = 0; i < fabrica.enemigos.length; i++) {
-     fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
-     document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
+    if(fabrica.enemigos[i].enCuadro()==true){
+      fabrica.enemigos[i].posX = fabrica.enemigos[i].posX - (pace*ratio);
+      document.getElementById(fabrica.enemigos[i].divID).style.left = fabrica.enemigos[i].posX +"px";
+    }
+    else {
+      document.getElementById(fabrica.enemigos[i].divID).remove();
+      fabrica.enemigos.splice(i,1);
+      i--;
+    }
   }
   puntos = setTimeout(avanzarEnemigos, 40);
   puntaje.innerHTML = puntos;

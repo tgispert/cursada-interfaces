@@ -249,7 +249,7 @@ function playGame(){
     avanzarEnemigos();
   }
   else{
-    document.getElementById("moon").style.animation = "gameOver 4s";
+    document.getElementById("moon").style.animation = "gameOver 6s";
     document.getElementById("game-over").style.visibility = "visible";
   }
 }

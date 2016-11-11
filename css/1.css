@@ -63,13 +63,21 @@ body{
   width: 100px;
   height: 100px;
   display: inline-block;
-  background-image: url('../images/bola.png');
   background-repeat: no-repeat;
   left: 1000px;
   top: 550px;
   z-index: 0;
+}
+
+.enemigoBola{
+  background-image: url('../images/bola.png');
   animation: spin 1.5s infinite;
   animation-timing-function: linear;
+}
+
+.enemigoTofu{
+  background-image: url('../images/tofu.png');
+  animation: tofuWalk 0.5s steps(3, end) infinite;
 }
 
 @keyframes fondo{
@@ -107,17 +115,17 @@ body{
   100% { transform: rotate(-360deg); }
 }
 
-@keyframes eWalk{
+@keyframes tofuWalk{
   0% { background-position: 0px 0px; }
   100% { background-position: -300px 0px; }
 }
 
-@keyframes eDie{
+@keyframes tofuDie{
   0% { background-position: 0px -100px; }
   100% { background-position: -500px -100px; }
 }
 
-@keyframes eIdle{
+@keyframes tofuIdle{
   0% { background-position: 0px -100px; }
   100% { background-position: -200px -100px; }
 }

@@ -48,7 +48,7 @@ function Character(posX,posY){
   this.vida = 100;
 }
 
-Character.prototype.actualizarVida = function () {
+Character.prototype.actualizarVida = function(){
   this.vida = this.vida-4;
   vida.style.width = pj.vida+"%";
 };
@@ -59,7 +59,7 @@ function Enemigo(posX,tipoAccion){
   this.divID = null;
 }
 
-Enemigo.prototype.enCuadro = function () {
+Enemigo.prototype.enCuadro = function(){
   if(this.posX<-100){
     return false;
   }
@@ -68,12 +68,22 @@ Enemigo.prototype.enCuadro = function () {
   }
 };
 
-Enemigo.prototype.colisiona = function () {
-  if((this.posX>60)&&(this.posX<120)&&(pj.tipoAccion!=this.tipoAccion)){
+Enemigo.prototype.colisiona = function(){
+  if((this.posX>60)&&(this.posX<130)&&(pj.tipoAccion!=this.tipoAccion)){
     return true;
   }
   else{
     return false;
+  }
+};
+
+Enemigo.prototype.rangoGolpe = function () {
+  if(this.tipoAccion==2){
+    if((this.posX>130)&&(this.posX<160)){
+      var tofu = document.getElementById(this.divID);
+      tofu.style.animation = "tofuDie 0.5s steps(5, end)";
+      window.setTimeout(function(){ tofu.style.display = "none"; },500);
+    }
   }
 };
 
@@ -82,10 +92,15 @@ function EnemyFactory(){
   this.enemigos = enemigos;
 }
 
-EnemyFactory.prototype.crearEnemigo = function (tipo) {
+EnemyFactory.prototype.crearEnemigo = function(tipo){
   var e1 = new Enemigo(1000,tipo);
   var div = document.createElement('div');
-  div.className = "juego enemigo";
+  if(tipo==1){
+    div.className = "juego enemigo enemigoBola";
+  }
+  else{
+    div.className = "juego enemigo enemigoTofu";
+  }
   e1.divID = puntos;
   div.id = e1.divID;
   document.getElementById("personajes").appendChild(div);
@@ -94,10 +109,8 @@ EnemyFactory.prototype.crearEnemigo = function (tipo) {
 
 EnemyFactory.prototype.crearEnemigoRandom = function () {
   if((pj.vida>0)){
-    if(Math.floor((Math.random()*2)+1)==1){
-      var aux = Math.floor((Math.random()*2)+1);
-      console.log(aux);
-      this.crearEnemigo(aux);
+    if(Math.floor((Math.random()*2))==1){
+      this.crearEnemigo(Math.floor((Math.random()*2)+1));
     }
   }
 };
@@ -137,6 +150,7 @@ function personajeOcioso(){
 }
 
 function walk(){
+  pj.tipoAccion = 0;
   personaje.style.animation = "walk 0.7s steps(9, end) infinite";
 }
 
@@ -147,6 +161,7 @@ function jump(){
 }
 
 function idle(){
+  pj.tipoAccion = 0;
   personaje.style.animation = "idle 3s steps(10, end) infinite";
 }
 
@@ -157,6 +172,7 @@ function headbutt(){
 }
 
 function die(){
+  pj.tipoAccion = 0;
   personaje.style.animation = "die 0.5s steps(1, end)";
 }
 
@@ -205,9 +221,14 @@ function avanzarEnemigos() {
       if(fabrica.enemigos[i].colisiona()){
         die();
         window.clearTimeout(animHandler);
-        window.setTimeout(function () { pj.enAccion = false; }, 300);
+        window.setTimeout(function(){ pj.enAccion = false; idle(); }, 300);
         estadoPaisaje(PAUSED);
         pj.actualizarVida();
+      }
+      else {
+        if(fabrica.enemigos[i].tipoAccion==2){
+          fabrica.enemigos[i].rangoGolpe();
+        }
       }
     }
     else{

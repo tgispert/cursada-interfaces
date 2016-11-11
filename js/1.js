@@ -14,6 +14,7 @@ var puntos;
 var puntaje;
 var fabrica;
 var estadoAnimPaisaje;
+var animHandler;
 var capa1;
 var capa2;
 var capa3;
@@ -142,8 +143,6 @@ function headbutt(){
 }
 
 function die(){
-  pj.enAccion = true;
-  pj.tipoAccion = 3;
   personaje.style.animation = "die 0.5s steps(1, end)";
 }
 
@@ -154,12 +153,12 @@ document.onkeypress = function(e){
       case W_KEY:
         jump();
         estadoPaisaje(RUNNING);
-        window.setTimeout(personajeOcioso,500);
+        animHandler = window.setTimeout(personajeOcioso,500);
         break;
       case A_KEY:
         headbutt();
         estadoPaisaje(RUNNING);
-        window.setTimeout(personajeOcioso,700);
+        animHandler = window.setTimeout(personajeOcioso,700);
         break;
       case S_KEY:
         idle();
@@ -194,7 +193,8 @@ function avanzarEnemigos() {
       if(fabrica.enemigos[i].colisiona()){
         die();
         pj.vidas--;
-        window.setTimeout(function(){ pj.enAccion = false; personaje.style.animation = ""; },500);
+        window.clearTimeout(animHandler);
+        window.setTimeout(function () { pj.enAccion = false; }, 300);
         estadoPaisaje(PAUSED);
       }
     }

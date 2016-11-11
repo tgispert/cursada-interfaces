@@ -256,6 +256,7 @@ function playGame(){
 
 document.getElementById("jugar").onclick = function(){
   document.getElementById("jugar").style.visibility = "hidden";
+  document.getElementById("intro").style.visibility = "hidden";
   inicializarVariables();
   playGame();
 };

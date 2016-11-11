@@ -18,7 +18,7 @@ body{
   background-color: rgba(0,0,0,0.3);
   font-family: HardGrunge;
   font-size: 40px;
-  text-shadow: 0 0 10px white;
+  text-shadow: 0 0 5px white;
   text-align: center;
   vertical-align: middle;
   box-shadow: 0 0 2px black;
@@ -49,9 +49,13 @@ body{
 }
 
 #jugar{
-  top: 300px;
+  top: 400px;
   left: 425px;
+  color: #e1e1e1;
   cursor: pointer;
+  z-index: 2;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 #moon{
@@ -70,6 +74,13 @@ body{
   left: 300px;
   font-size: 100px;
   visibility: hidden;
+}
+
+#intro{
+  background-color: rgba(0, 0, 0, 0.9);
+  background-image: url('../images/intro.png');
+  background-size: cover;
+  z-index: 2;
 }
 
 @keyframes flash{

@@ -8,7 +8,7 @@ const MAX_PACE = 8;
 const MIN_PACE = 5;
 const MAX_RATIO = 5;
 const MIN_RATIO = 1;
-const ENEMY_INTERVAL = 40;
+var enemyInterval = 50;
 var pace;
 var ratio;
 var puntos;
@@ -109,7 +109,7 @@ EnemyFactory.prototype.crearEnemigo = function(tipo){
 
 EnemyFactory.prototype.crearEnemigoRandom = function () {
   if((pj.vida>0)){
-    if(Math.floor((Math.random()*2))==1){
+    if(Math.floor((Math.random()*2)+1)!=0){
       this.crearEnemigo(Math.floor((Math.random()*2)+1));
     }
   }
@@ -243,7 +243,9 @@ function avanzarEnemigos() {
 
 function playGame(){
   if(pj.vida>0){
-    if(puntos%ENEMY_INTERVAL==0){
+    if((puntos%300==0)&&(enemyInterval>10)){ enemyInterval = enemyInterval -5;}
+    if(puntos%enemyInterval==0){
+      console.log(enemyInterval);
       fabrica.crearEnemigoRandom();
     }
     avanzarEnemigos();

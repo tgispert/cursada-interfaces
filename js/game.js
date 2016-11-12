@@ -25,7 +25,6 @@ var capa3;
 var personaje;
 var pj;
 var musica;
-var scoreboard;
 
 function inicializarVariables(){
   pace = 4;
@@ -49,7 +48,6 @@ function inicializarVariables(){
     this.currentTime = 0;
     this.play();
   }, false);
-  scoreboard = [];
 }
 
 function Character(posX,posY){
@@ -181,8 +179,8 @@ function walk(){
 function jump(){
   pj.enAccion = true;
   pj.tipoAccion = 1;
-  personaje.style.animation = "jump 0.5s steps(10, end)";
   pj.jumpAudio.play();
+  personaje.style.animation = "jump 0.5s steps(10, end)";
 }
 
 function idle(){
@@ -193,14 +191,14 @@ function idle(){
 function headbutt(){
   pj.enAccion = true;
   pj.tipoAccion = 2;
-  personaje.style.animation = "headbutt 0.7s steps(9, end)";
   pj.hitAudio.play();
+  personaje.style.animation = "headbutt 0.7s steps(9, end)";
 }
 
 function die(){
   pj.tipoAccion = 0;
-  personaje.style.animation = "die 0.3s steps(1, end)";
   pj.dieAudio.play();
+  personaje.style.animation = "die 0.3s steps(1, end)";
 }
 
 document.onkeypress = function(e){
@@ -248,7 +246,7 @@ function avanzarEnemigos() {
       if(fabrica.enemigos[i].colisiona()){
         die();
         window.clearTimeout(animHandler);
-        window.setTimeout(function(){ pj.enAccion = false; idle(); }, 400);
+        window.setTimeout(function(){ pj.enAccion = false; }, 400);
         estadoPaisaje(PAUSED);
         pj.actualizarVida();
       }
@@ -278,11 +276,14 @@ function playGame(){
     avanzarEnemigos();
   }
   else{
-    document.getElementById("moon").style.animation = "gameOver 6s";
+    var go = new Audio('fx/go.wav');
+    go.play();
+    document.getElementById("moon").style.animation = "gameOver 4s";
     document.getElementById("game-over").style.visibility = "visible";
   }
 }
 
+// inicializacion del juego
 document.getElementById("jugar").onclick = function(){
   document.getElementById("jugar").style.visibility = "hidden";
   document.getElementById("intro").style.visibility = "hidden";

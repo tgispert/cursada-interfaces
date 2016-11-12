@@ -90,6 +90,12 @@ body{
   z-index: 2;
 }
 
+#social-icons{
+  left: 1000px;
+  position: absolute;
+  list-style-type: none;
+}
+
 @keyframes flash{
   0% { color: white; }
   100% { color: black; }
@@ -97,7 +103,7 @@ body{
 
 @keyframes gameOver{
   0% { top: 550px; }
-  15% { top: 100px; }
+  45% { top: 100px; }
   80% { top: 100px; }
   100% { top: 550px; }
 }

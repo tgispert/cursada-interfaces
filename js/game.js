@@ -8,6 +8,8 @@ const MAX_PACE = 8;
 const MIN_PACE = 5;
 const MAX_RATIO = 5;
 const MIN_RATIO = 1;
+const FX_VOL = 0.3;
+const MUSIC_VOL = 0.6;
 var enemyInterval = 50;
 var pace;
 var ratio;
@@ -22,6 +24,8 @@ var capa2;
 var capa3;
 var personaje;
 var pj;
+var musica;
+var scoreboard;
 
 function inicializarVariables(){
   pace = 4;
@@ -38,6 +42,14 @@ function inicializarVariables(){
   capa1 = document.getElementById("capa1");
   capa2 = document.getElementById("capa2");
   capa3 = document.getElementById("capa3");
+  musica = new Audio('fx/music.wav');
+  musica.volume = MUSIC_VOL;
+  musica.play();
+  musica.addEventListener('ended', function(){
+    this.currentTime = 0;
+    this.play();
+  }, false);
+  scoreboard = [];
 }
 
 function Character(posX,posY){
@@ -46,6 +58,15 @@ function Character(posX,posY){
   this.enAccion = false;
   this.tipoAccion = 0;
   this.vida = 100;
+  var hit = new Audio('fx/hit.wav');
+  hit.volume = FX_VOL;
+  this.hitAudio = hit;
+  var jump = new Audio('fx/jump.wav');
+  jump.volume = FX_VOL;
+  this.jumpAudio = jump;
+  var die = new Audio('fx/die.wav');
+  die.volume = FX_VOL;
+  this.dieAudio = die;
 }
 
 Character.prototype.actualizarVida = function(){
@@ -81,6 +102,9 @@ Enemigo.prototype.rangoGolpe = function () {
   if(this.tipoAccion==2){
     if((this.posX>130)&&(this.posX<160)){
       var tofu = document.getElementById(this.divID);
+      var audio = new Audio('fx/tofu.wav');
+      audio.volume = FX_VOL;
+      audio.play();
       tofu.style.animation = "tofuDie 0.5s steps(5, end)";
       window.setTimeout(function(){ tofu.style.display = "none"; },500);
     }
@@ -158,6 +182,7 @@ function jump(){
   pj.enAccion = true;
   pj.tipoAccion = 1;
   personaje.style.animation = "jump 0.5s steps(10, end)";
+  pj.jumpAudio.play();
 }
 
 function idle(){
@@ -169,11 +194,13 @@ function headbutt(){
   pj.enAccion = true;
   pj.tipoAccion = 2;
   personaje.style.animation = "headbutt 0.7s steps(9, end)";
+  pj.hitAudio.play();
 }
 
 function die(){
   pj.tipoAccion = 0;
   personaje.style.animation = "die 0.3s steps(1, end)";
+  pj.dieAudio.play();
 }
 
 document.onkeypress = function(e){

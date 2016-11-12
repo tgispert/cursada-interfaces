@@ -78,6 +78,9 @@ body{
   left: 300px;
   font-size: 100px;
   visibility: hidden;
+  text-shadow: 0 0 15px white;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 #intro{
